@@ -10,18 +10,27 @@ import const
 def run():
     with grpc.insecure_channel(const.IP+':'+const.PORT) as channel:
         stub = SensorService_pb2_grpc.SensorServiceStub(channel)
-
-        # Registra dados do sensor
-        response = stub.RegistrarDadoSensor(SensorService_pb2.SensorData(id=4, data='12/12/2022', localizacao='Sala-102', temperatura=22.0))
-        print ('Dados do Sensor registado' + response.status)
-
-        # Consulta dados por data
-        response = stub.ConsultarDadosSensoresPorData(SensorService_pb2.Data(data='11/12/2022'))
-        print ('Dados do Sensor consultado: ' + str(response))
-
-        # Consulta dados por localização
-        response = stub.ConsultarDadosSensoresPorLocalizacao(SensorService_pb2.Localizacao(localizacao='Sala-102'))
-        print ('Dados do Sensor consultado: ' + str(response))
+        try:
+            # Consulta dados por data
+            response = stub.ConsultarDadosSensoresPorData(SensorService_pb2.Data(data='12/12/2022'))
+            print("Consulta realizada para data 12/12/2022 \n")
+            for item in response.dados_sensor:
+                print('ID: {}'.format(item.id))
+                print('Data: {}'.format(item.data))
+                print('Localização: {}'.format(item.localizacao))
+                print('Temperatura: {}'.format(item.temperatura))
+            print("\n\n")
+            # Consulta dados por localização
+            response = stub.ConsultarDadosSensoresPorLocalizacao(SensorService_pb2.Localizacao(localizacao='Sala-102'))
+            print("Consulta realizada para localização: Sala-102 \n")
+            for item in response.dados_sensor:
+                print('ID: {}'.format(item.id))
+                print('Data: {}'.format(item.data))
+                print('Localização: {}'.format(item.localizacao))
+                print('Temperatura: {}'.format(item.temperatura))
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAUTHENTICATED:
+                print('Erro na requisicao.\n')
 
 
 if __name__ == '__main__':

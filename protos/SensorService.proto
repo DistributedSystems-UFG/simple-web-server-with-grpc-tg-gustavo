@@ -10,13 +10,13 @@ package sensor_service;
 service SensorService {
   
   // Registra o dado de um sensor
-  rpc RegistrarDadoSensor (EmployeeData) returns (StatusReply) {}
+  rpc RegistrarDadoSensor (DadoSensor) returns (StatusReply) {}
   
   // Consulta os dados de um sensor pela data
   rpc ConsultarDadosSensoresPorData (Data) returns (ListaDadosSensores) {}
   
   // Consulta os dados de um sensor pela localização
-  rpc ConsultarDadosSensoresPorLocalizacao (localizacao) returns (ListaDadosSensores) {}
+  rpc ConsultarDadosSensoresPorLocalizacao (Localizacao) returns (ListaDadosSensores) {}
   
 }
 
@@ -32,11 +32,15 @@ message Data {
 }
 
 message Localizacao {
-  string localizacao;
+  string localizacao = 1;
 }
 
 message ListaDadosSensores{
-  repeated DadoSensor sensor_dado = 1;
+  repeated DadoSensor dados_sensor = 1;
+}
+
+message StatusReply {
+  string status = 1;
 }
 
 message EmptyMessage{}

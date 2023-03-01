@@ -19,7 +19,7 @@ tempDB=[
  'temperatura':24.5
  },
  {
- 'id':1,
+ 'id':3,
  'data':'11/12/2022',
  'localizacao':'Sala-101',
  'temperatura':24.5
@@ -39,19 +39,19 @@ class SensorServer(SensorService_pb2_grpc.SensorServiceServicer):
     return SensorService_pb2.StatusReply(status='OK')
 
   def ConsultarDadosSensoresPorData(self, request, context):
-   list = SensorService_pb2.ListaDadosSensores()
-    for item in tempDB 
-        if (item['data'] == request.data):
-            temp_data = SensorService_pb2.SensorData(id=item['id'], data=item['data'], localizacao=item['localizacao'], temperatura=item['temperatura']) 
-            list.Sensor_data.append(temp_data)
+    list = SensorService_pb2.ListaDadosSensores()
+    for item in tempDB:
+      if (item['data'] == request.data):
+        temp_data = SensorService_pb2.DadoSensor(id=item['id'], data=item['data'], localizacao=item['localizacao'], temperatura=item['temperatura']) 
+        list.dados_sensor.append(temp_data)
     return list
 
   def ConsultarDadosSensoresPorLocalizacao(self, request, context):
-   list = SensorService_pb2.ListaDadosSensores()
-    for item in tempDB 
-        if (item['localizacao'] == request.localizacao):
-            temp_data = SensorService_pb2.SensorData(id=item['id'], data=item['data'], localizacao=item['localizacao'], temperatura=item['temperatura']) 
-            list.Sensor_data.append(temp_data)
+    list = SensorService_pb2.ListaDadosSensores()
+    for item in tempDB:
+      if (item['localizacao'] == request.localizacao):
+        temp_data = SensorService_pb2.DadoSensor(id=item['id'], data=item['data'], localizacao=item['localizacao'], temperatura=item['temperatura']) 
+        list.dados_sensor.append(temp_data)
     return list
 
 def serve():
